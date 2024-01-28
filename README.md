@@ -1,8 +1,8 @@
 # PalServer-Monitor
 
-A tiny bash script that checks if Palworld PalServer is up and reports on CPU and memory usage. If PalServer is down, the script starts it again.
+A handful of tiny bash scripts that checks if Palworld PalServer is up, restarts PalServer if necessary, reports on CPU and memory usage, and backs up save and world data.
 
-Crash logs are then dropped to an S3 bucket for a web interface to view and a Vercel buuild is triggered. This is optional, if you don't need it just remove lines 12-14.
+Crash logs are then dropped to an S3 bucket for a web interface ([Palserver-Monitor-Log-Viewer](https://github.com/PenguinOfWar/palserver-monitor-log-viewer)) to view and a Vercel build is triggered. This is optional, if you don't need it just remove lines 12-14.
 
 ## Why
 
@@ -12,12 +12,16 @@ What I've observed so far is that the PalServer software will just eat memory un
 
 I'm sharing this in case it's useful for any other enthusiasts who want to run their own server and keep track of what is going on.
 
-## Logs
+## Scripts
 
-Live logs are stored in `/home/steam/log/palserver.csv`. After a crash, the current log is moved to `/home/steam/log/crashes/palserver-$TIMESTAMP.csv`.
+`Monitor`: Live logs are stored in `/home/steam/log/palserver.csv`. After a crash, the current log is copied to `/home/steam/log/crashes/palserver-$TIMESTAMP.csv`, uploaded to the designated S3 bucket, and then cleared.
 
 ```bash
 root@machine:~# cat /home/steam/log/crashes/palserver-1706431621522.csv 
 2024-01-28 09:46:01,running,55.6,15.4,5211236,1897096
 2024-01-28 09:47:01,restarting,0,0,0,0
 ```
+
+`Performance`: Logs within `/home/steam/log/palserver.csv` are trimmed on an hourly basis to the last 1440 records (roughly the last 24 hours at one line per minute) then uploaded to the designated S3 bucket so you can view the last 24 hours of data in a time series chart.
+
+`Backup:` Backs up the Palworld save and world files from `/home/steam/Palworld/Pal/Saved/SaveGames` to the designated S3 bucket.
