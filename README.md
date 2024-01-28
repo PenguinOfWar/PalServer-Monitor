@@ -2,7 +2,7 @@
 
 A tiny bash script that checks if Palworld PalServer is up and reports on CPU and memory usage. If PalServer is down, the script starts it again.
 
-Crash logs are then dropped to an S3 bucket for a web interface to view. This is optional, if you don't need it just remove lines 12-13.
+Crash logs are then dropped to an S3 bucket for a web interface to view and a Vercel buuild is triggered. This is optional, if you don't need it just remove lines 12-14.
 
 ## Why
 
