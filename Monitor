@@ -8,7 +8,7 @@ if pgrep PalServer-Linux; then
     echo "$NOW,running,$PERF" >> /home/steam/log/palserver.csv
 else
     echo "$NOW,restarting,0,0,0,0" >> /home/steam/log/palserver.csv
-    mv "/home/steam/log/palserver.csv" /home/steam/log/crashes/palserver-$TIMESTAMP.csv
+    cp "/home/steam/log/palserver.csv" /home/steam/log/crashes/palserver-$TIMESTAMP.csv
     s3cmd put -r /home/steam/log/crashes/ s3://$BUCKET_NAME/log/
     rm /home/steam/log/crashes/*
     curl $HOOK >/dev/null 2>&1
