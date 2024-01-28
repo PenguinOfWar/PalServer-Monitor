@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if pgrep PalServer-Linux; then
+    echo "PalServer is up:    $(date)" >> /home/steam/log/palserver.txt
+    echo "Usage:" >> /home/steam/log/palserver.txt
+    ps -C PalServer-Linux -o %cpu,%mem,vsz,rss >> /home/steam/log/palserver.txt
+else
+    echo "Restarting PalServer:     $(date)" >> /home/steam/log/palserver.txt
+    /bin/bash /home/steam/Palworld/PalServer.sh >/dev/null 2>&1
+fi
