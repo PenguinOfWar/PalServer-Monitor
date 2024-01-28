@@ -1,0 +1,5 @@
+#!/bin/bash
+
+TIMESTAMP=$(($(date +%s%N)/1000000))
+
+s3cmd put -r /home/steam/Palworld/Pal/Saved/SaveGames s3://$BUCKET/$TIMESTAMP/
