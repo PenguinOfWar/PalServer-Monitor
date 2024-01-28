@@ -9,5 +9,7 @@ if pgrep PalServer-Linux; then
 else
     echo "$NOW,restarting,0,0,0,0" >> /home/steam/log/palserver.csv
     mv "/home/steam/log/palserver.csv" /home/steam/log/crashes/palserver-$TIMESTAMP.csv
+    s3cmd put -r /home/steam/log/crashes/ s3://$BUCKET_NAME/
+    rm /home/steam/log/crashes/*
     /bin/bash /home/steam/Palworld/PalServer.sh >/dev/null 2>&1
 fi
